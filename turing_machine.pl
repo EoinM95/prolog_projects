@@ -41,7 +41,11 @@ extract([L,R,_],Output):-
 
 extractLeft(L,LeftOut):- reverse(L,Reversed), removeInitialBlank(Reversed,LeftOut).
 
-extractRight(R,LeftOutput,Output):- append(LeftOutput,R,Appended), reverse(Appended,Reversed), removeInitialBlank(Reversed,Cleaned), reverse(Cleaned,Output).
+extractRight(R,LeftOutput,Output):-
+  append(LeftOutput,R,Appended),
+  reverse(Appended,Reversed),
+  removeInitialBlank(Reversed,Cleaned),
+  reverse(Cleaned,Output).
 
 removeInitialBlank([b-k|Rest],Output):- removeInitialBlank(Rest,Output).
 removeInitialBlank(Output,Output):- noInitialBlank(Output).
