@@ -8,21 +8,21 @@ s([s, [ADV,S]]) --> adv(ADV), s(S).
 
 s(S)  --> question(S).
 
-question([q, [AUX, S]]) --> aux(AUX), s(S).
-question([q, [PRO, S]]) --> q_pro(PRO), s_no_obj(S).
-question([q, [PRO, S]]) --> q_pro(PRO), s_no_subj(S,_).
-question([q, [QTEMP,AUX, S]]) --> q_temp(QTEMP), aux(AUX), s(S).
-question([q, [QADV, AUX, S]]) --> q_adv(QADV), aux(AUX), s(S).
-question([q, [QADV,ADV,AUX,S]]) --> q_adv(QADV), adv(ADV), aux(AUX), s(S).
+question([q, [AUX, S]]) --> aux(AUX), s_no_tense(S).
+%question([q, [PRO, S]]) --> q_pro(PRO), s_no_obj(S).
+question([q, [PRO, S]]) --> q_pro(PRO), s_no_subj(S,3,sg).
+question([q, [QTEMP,AUX, S]]) --> q_temp(QTEMP), aux(AUX), s_no_tense(S).
+question([q, [QADV, AUX, S]]) --> q_adv(QADV), aux(AUX), s_no_tense(S).
+question([q, [QADV,ADV,AUX,S]]) --> q_adv(QADV), adv(ADV), aux(AUX), s_no_tense(S).
 question([q, [VC, S]]) --> vc(VC,Per,Num), s_no_verb(S,Per,Num).
 s_no_verb([s, [NP,VP]],Per,Num) --> np(NP,Per,Num,nom), vp_no_verb(VP,_,Num).
-
+s_no_tense([s,[NP,VP]]) --> np(NP,_,_,nom), vp(VP,_,_).
 %Clauses which can be embedded into a noun phrase
-npmodifierclause([relclause, [COMP,S]],Num) --> comp(COMP), s_no_subj(S,Num).
-npmodifierclause([relclause, [S]],Num) --> s_no_subj(S,Num).
+npmodifierclause([relclause, [COMP,S]],Num) --> comp(COMP), s_no_subj(S,_,Num).
+npmodifierclause([relclause, [S]],Num) --> s_no_subj(S,_,Num).
 npmodifierclause([relclause, [COMP,S]],_) --> comp(COMP), s_no_obj(S).
 npmodifierclause([relclause, [S]],_) --> s_no_obj(S).
-s_no_subj([s,[elipsis,VP]], Num) --> vp(VP,_,Num).
+s_no_subj([s,[elipsis,VP]], Per, Num) --> vp(VP,Per,Num).
 s_no_obj([s,[NP,VP]]) --> np(NP,Per,Num,nom), vp_no_obj(VP,Per,Num).
 %Clauses which can be the object of a verb phrase
 vcompclause([relclause, [COMP,S]]) --> comp(COMP), s(S).
@@ -40,15 +40,22 @@ vp([vp, [ADV, VP]],Per,Num) --> adv(ADV), vp(VP,Per,Num).
 vp([vp(Num), [V]],Per,Num) --> vi(V,Per,Num).
 vp([vp(Num), [V,A]],Per,Num) --> vi(V,Per,Num),adjunct(A).
 vp([vp(Num), [V,N]],Per,Num) --> vt(V,Per,Num), np(N,_,_,obj).
-vp([vp(Num), [V,REL]],Per,Num) --> vt(V,Per,Num), vcompclause(REL).
 vp([vp(Num), [V,N,P]],Per,Num) --> vd(V,Per,Num),np(N,_,_,obj),pp(P).
+vp([vp(Num), [V,N1,N2]],Per,Num) --> vd(V,Per,Num),np(N1,_,_,obj),np(N2,_,_,obj).
 vp([vp(Num), [V, ADV]],Per,Num) --> vi(V,Per,Num), adv(ADV).
 vp([vp(Num), [V,A,ADV]],Per,Num) --> vi(V,Per,Num),adjunct(A), adv(ADV).
 vp([vp(Num), [V,ADV,A]],Per,Num) --> vi(V,Per,Num), adv(ADV), adjunct(A).
 vp([vp(Num), [V,N,ADV]],Per,Num) --> vt(V,Per,Num), np(N,_,_,obj), adv(ADV).
 vp([vp(Num), [V,N,P,ADV]],Per,Num) --> vd(V,Per,Num),np(N,_,_,obj),pp(P), adv(ADV).
+vp([vp(Num), [V,N1,N2,ADV]],Per,Num) --> vd(V,Per,Num),np(N1,_,_,obj),np(N2,_,_,obj), adv(ADV).
+%tri-transitive
 vp([vp(Num), [V,N1,N2,P]], Per, Num) --> vtt(V,Per,Num),np(N1,_,_,obj),np(N2,_,_,obj),pp(P).
+%copula/declarative statements
 vp([vp(Num), [V,N]], Per, Num) --> vc(V,Per,Num), np(N,_,_,obj).
+%verbs that allow sentence embedding
+vp([vp(Num), [V,RELC]],Per,Num) --> vse(V,Per,Num), vcompclause(RELC).
+%verbs that allow question embedding
+vp([vp(Num), [V,Q]],Per,Num) --> vqe(V,Per,Num), question(Q).
 %rules for elipsis constructions in relative clauses
 vp_no_obj([vp(Num), [V,elipsis]],Per,Num) --> vt(V,Per,Num).
 vp_no_obj([vp(Num), [V,N,P]],Per,Num) --> vd(V,Per,Num),np(N,_,_,obj),p(P).
@@ -56,7 +63,7 @@ vp_no_obj([vp(Num), [V,elipsis,ADV]],Per,Num) --> vt(V,Per,Num), adv(ADV).
 vp_no_obj([vp(Num), [V,N,P,ADV]],Per,Num) --> vd(V,Per,Num),np(N,_,_,obj),p(P),adv(ADV).
 adjunct([adjunct, PP]) --> pp(PP).
 %Rules for elipsis constructions in inverted questions
-vp_no_verb([vp(Num), [elipsis, N]],_,_) --> np(N,_,_,obj).
+vp_no_verb([vp(Num), [elipsis, N]],_,Num) --> np(N,_,_,obj).
 
 p([p, [W]]) --> [W],{lex(p,W)}.
 comp([comp, [W]]) --> [W],{lex(comp,W)}.
@@ -80,6 +87,8 @@ vt([v(Num), [W]],Per,Num) --> [W], {lex(vt,W,Per,Num)}.
 vd([v(Num), [W]],Per,Num) --> [W], {lex(vd,W,Per,Num)}.
 vtt([v(Num), [W]],Per,Num) --> [W], {lex(vtt,W,Per,Num)}.
 vc([v(Num), [W]],Per,Num) --> [W], {lex(vc,W,Per,Num)}.
+vse([v(Num), [W]],Per,Num) --> [W], {lex(vse,W,Per,Num)}.
+vqe([v(Num), [W]],Per,Num) --> [W], {lex(vqe,W,Per,Num)}.
 
 lex(det,a,sg).
 lex(det,an,sg).
@@ -108,6 +117,7 @@ lex(n,man,sg).
 lex(n,woman,sg).
 lex(n,couch,sg).
 lex(n,book,sg).
+lex(n,books,pl).
 lex(n,apple,sg).
 lex(n,orange,sg).
 lex(n,oranges,pl).
@@ -149,3 +159,23 @@ lex(vc,am,1,sg).
 lex(vc,are,2,_).
 lex(vc,is,3,sg).
 lex(vc,are,_,pl).
+%vse = verbs that allow sentence embedding
+lex(vse,know,1,sg).
+lex(vse,know,2,_).
+lex(vse,knows,3,sg).
+lex(vse,know,_,pl).
+lex(vt,know,1,sg).
+lex(vt,know,2,_).
+lex(vt,knows,3,sg).
+lex(vt,know,_,pl).
+lex(vse,think,1,sg).
+lex(vse,think,2,_).
+lex(vse,thinks,3,sg).
+lex(vse,think,_,pl).
+lex(vse,believe,1,sg).
+lex(vse,believe,2,_).
+lex(vse,believes,3,sg).
+lex(vse,believe,_,pl).
+%vqe = verbs that allow question embedding
+lex(vqe,asked,_,_).
+lex(vqe,wondered,_,_).

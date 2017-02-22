@@ -36,8 +36,8 @@ test(24,X) :- s(X,[the,quiet,man,sleeps],[]).
 test(25,X) :- s(X,[the,man,quiet,sleeps],[]). %fail
 test(26,X) :- s(X,[the,man,sleeps,quiet],[]). %fail
 %relative clauses
-test(27,X) :- s(X,[the,man,i,give,the,book,to,sleeps,quietly],[]).
-test(28,X) :- s(X,[the,man,that,sleeps,quietly,gives,the,book,to,me],[]).
+test(27,X) :- s(X,[the,man,i,give,the,books,to,sleeps,quietly],[]).
+test(28,X) :- s(X,[the,man,that,sleeps,quietly,gives,books,to,me],[]).
 %tri-transitive
 test(29,X) :- s(X,[the,man,swapped,me,an,apple,for,an,orange],[]).
 %declarative
@@ -49,10 +49,18 @@ test(33,X) :- s(X,[did,you,give,the,book,to,her],[]).
 test(34,X) :- s(X,[when,did,you,give,the,book,to,her],[]).
 test(35,X) :- s(X,[how,did,you,give,the,book,to,her],[]).
 test(36,X) :- s(X,[how,quickly,did,you,give,the,book,to,her],[]).
-test(37,X) :- s(X,[who,swapped,the,apple,for,the,orange],[]).
+test(37,X) :- s(X,[who,gives,the,book,to,her],[]).
 %sentence embedding
-
+test(38,X) :- s(X,[he,thinks,that,she,swapped,me,an,apple,for,an,orange],[]).
+test(39,X) :- s(X,[he,thinks,she,swapped,him,an,apple,for,an,orange],[]).
+test(40,X) :- s(X,[he,believes,she,swapped,him,an,apple,for,an,orange],[]).
+test(41,X) :- s(X,[he,knows,that,she,swapped,him,an,apple,for,an,orange],[]).
 %question embedding
+test(42,X) :- s(X,[he,asked,did,she,give,me,a,book],[]).
+test(43,X) :- s(X,[he,asked,when,did,she,give,me,the,book],[]).
+test(44,X) :- s(X,[he,wondered,when,did,she,give,me,the,book],[]).
+test(45,X) :- s(X,[he,wondered,how,quickly,did,she,give,me,the,book],[]).
+
 testem :-
-     pass([1,2,5,7,9,12,13,16,17,18,19,20,21,23,24,27,28,29,30,31,32,33,34,35,36,37]),
+     pass([1,2,5,7,9,12,13,16,17,18,19,20,21,23,24,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45]),
      fail([3,4,6,8,10,11,14,15,22,25,26]).
