@@ -16,13 +16,13 @@ test(1,X) :-
 test(a1,X) :-
 	s(Type,X,B,G-G,[the,man,sleeps,on,the,ugly,couch],[]).
 test(b1,X) :-
-	s(Type,X,B,G-G,[the,couch,the,man,sleeps,on],[]).
+	s(Type,X,B,G-G,[the,couch,the,man,sleeps,on],[]).% fails, arguably should
 test(c1,X) :-
-	s(Type,X,B,G-G,[on,the,couch,the,man,sleeps],[]).
+	s(Type,X,B,G-G,[on,the,couch,the,man,sleeps],[]). % fails, should pass
 test(d1,X) :-
-	s(Type,X,B,G-G,[the,ugly,couch,the,man,sleeps,on],[]).
+	s(Type,X,B,G-G,[the,ugly,couch,the,man,sleeps,on],[]). % fails, arguably should
 test(e1,X) :-
-	s(Type,X,B,G-G,[on,the,ugly,couch,the,man,sleeps],[]).
+	s(Type,X,B,G-G,[on,the,ugly,couch,the,man,sleeps],[]). % fails, should pass
 test(f1,X) :-
 	s(Type,X,B,G-G,[couch,the,man,sleeps,on,the,ugly],[]). %no
 
