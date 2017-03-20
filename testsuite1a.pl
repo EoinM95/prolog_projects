@@ -1,5 +1,5 @@
 % cmv testsuite1
-% Last Modified: Mon Feb  6 09:13:58 2017 (vogel)
+% Last Modified: Mon Feb  6 09:13:58 2017 (vogel) 
 % starting point at end of the lecture
 % A DCG with Case, Person, Speaker and Number Agreement
 % (use utilities1.pl)
@@ -21,8 +21,12 @@ test(12,X) :- s(X,[i,sleep],[]).
 test(13,X) :- s(X,[she,sleeps],[]).
 test(14,X) :- s(X,[she,sleep],[]).
 test(15,X) :- s(X,[her,sleeps],[]).
-%adverbs
-test(16,X) :- s(X,[the,man,sleeps,peacefully,on,the,couch],[]).
+
+
+testem :-
+     pass([1,2,5,7,9,12,13]),
+     fail([3,4,6,8,10,11,14,15]).
+,on,the,couch],[]).
 test(17,X) :- s(X,[the,men,sleep,quietly,on,the,couch],[]).
 test(18,X) :- s(X,[the,man,quietly,sleeps,on,the,couch],[]).
 test(19,X) :- s(X,[the,men,sleep,on,the,couches,quietly],[]).
