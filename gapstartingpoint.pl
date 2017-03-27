@@ -22,7 +22,7 @@ s(decl,[s,[[topic,Topic],[comment,VP]]],B, G-G) -->
 
 % topicalization
 s(decl,[s,[[topic,Topic],[comment,[NP,VP]]]],B, G-G) -->
-	Topic,Per1,Num2,obj),
+	np(Topic,Per1,Num2,obj,nogap-nogap),
 	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin).
 
