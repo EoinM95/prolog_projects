@@ -153,7 +153,7 @@ test(53,X):-
 test(54,X):-
 	s(Type,X,B,G-G,[sal,thought,val,to,hate,a,cat],[]).%yes
 test(a54,X):-
-	s(Type,X,B,G-G,[a,cat,sal,thought,val,to,hate],[]).%yes
+	s(Type,X,B,G-G,[a,cat,sal,thought,val,to,hate],[]).%yes %How to pass gaps through complements??%
 test(55,X):-
 	s(Type,X,B,G-G,[sal,believed,val,to,hate,a,cat],[]). %yes
 test(a55,X):-

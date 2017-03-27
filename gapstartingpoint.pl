@@ -93,7 +93,7 @@ np([np(Num,Case)],Per,Num,Case,gap-nogap) --> [].
 
 nom(N,Num) --> n(N,Num).
 nom([nom, [A, N]],Num) --> adj(A,Type), nom(N,Num).
-nom([nom, [N, A]],Num) --> n(N,Num), adjunct(A, G-G).
+nom([nom, [N, A]],Num) --> n(N,Num), adjunct(A, GI-GO).
 
 % subject relatives go in one fell swoop
 relc(Type,[relc, [Pro,VP]]) -->
@@ -119,7 +119,7 @@ relc(Type,[relc, [Pro,N,V,A]]) -->
 	pro(relpro,Pro,_,_,nom),
 	np(N,Per,Num,nom,nogap-nogap),
 	vt(V,Per,Num,Form),
-	adjunct(A, G-G).
+	adjunct(A, GI-GO).
 
 relc(Type,[relc, [Pro,N,V,N1]]) -->
 	pro(relpro,Pro,_,_,nom),
@@ -132,7 +132,7 @@ relc(Type,[relc, [Pro,N,V,P]]) -->
 	pro(relpro,Pro,_,_,nom),
 	np(N,Per,Num,nom,nogap-nogap),
 	vd(V,Per,Num,Form),
-	pp(to,P, G-G).
+	pp(to,P, GI-GO).
 %vp(vd,[vp(Num,Form), [V,N,P]],Per,Num,Form) -->
 
 relc(Type,[relc, [Pro,N,V,N2,Scomp]]) -->
@@ -140,7 +140,7 @@ relc(Type,[relc, [Pro,N,V,N2,Scomp]]) -->
 	np(N,Per,Num,nom,nogap-nogap),
 	vtr(V,Per,Num,Form),
 	np(N2,_,_,obj,nogap-nogap),
-	s(comp,Scomp, B, G-G).
+	s(comp,Scomp, B, GI-GO).
 %vp(vtr,[vp(Num,Form), [V,N1,N2,Scomp]],Per,Num,Form) -->
 
 relc(Type,[relc, [Pro,N,V,N1,N2]]) -->
@@ -161,22 +161,22 @@ vp(inf,[infinitive, VS],Per,Num,inf,GapIn-GapOut) -->
 
 vp(vc,[vp(Num,Form), [V,N]],Per,Num,Form,GapIn-GapOut) -->
 	vc(V,Per,Num,Form),
-	np(N,_,_,nom,G-G).
+	np(N,_,_,nom,GI-GO).
 vp(vc,[vp(sg,Form), [V,PP]],Per,sg,Form,GapIn-GapOut) -->
 	vc(V,Per,sg,Form),
-	pp(Type,PP,G-G).
+	pp(Type,PP,GI-GO).
 
 vp(vi,[vp(Num,Form), [V]],Per,Num,Form,_) --> vi(V,Per,Num,Form).
 vp(vi,[vp(Num,Form), [V,A]],Per,Num,Form,GapIn-GapOut) --> vi(V,Per,Num,Form),adjunct(A,GapIn-GapOut).
-vp(vt,[vp(Num,Form), [[vt(norm,Num),V],Complement]],Per,Num,Form,_) -->
+vp(vt,[vp(Num,Form), [[vt(norm,Num),V],Complement]],Per,Num,Form,GapIn-GapOut) -->
 	vt([vt(Subcat,Num),V],Per,Num,Form),
-	{complement_structured(Subcat,Complement,Term)},
+	{complement_structured(Subcat,Complement,Term,GapIn-GapOut)},
 	 Term.
 
 
 vp(vt,[vp(Num,Form), [[vt(norm,Num),V],N]],Per,Num,Form,GapIn-GapOut) -->
 	vt([vt(norm,Num),V],Per,Num,Form),
-	np(N,_,_,obj,G-G).
+	np(N,_,_,obj,GI-GO).
 vp(vt,[vp(Num,Form), [V,N,A]],Per,Num,Form,GapIn-GapOut) -->
 	vt(V,Per,Num,Form),
 	np(N,_,_,obj,GapIn-GapMid),
@@ -224,7 +224,7 @@ vp(Type,[vp(Num,Form), [V,VP,PP]],Per,Num,fin,GapIn-GapOut) -->
 % vpobjgone(vtr,[vp(Num,Form), [V,N1,Scomp]],Per,Num,Form) -->
 % 	vtr(V,Per,Num,Form),
 % 	np(N1,_,_,obj,nogap-nogap),
-% 	s(comp,Scomp,B, G-G).
+% 	s(comp,Scomp,B, GI-GO).
 % vpobjgone(vtr,[vp(Num,Form), [V,N1,N2]],Per,Num,Form) -->
 % 	vtr(V,Per,Num,Form),
 % 	np(N1,_,_,obj,nogap-nogap),
@@ -368,53 +368,53 @@ lex(aux,do,2,sg,fin).
 lex(aux,does,3,sg,fin).
 lex(aux,do,P,pl,fin).
 
-%word(vt([np,s(interog,B,G-G),s(bse,B,G-G),s(comp,B,G-G)]),[saw],fin).
-%word(vt([np,s(interog,B,G-G),s(fin),s(comp,B,G-G),s(inf,B,G-G)]),[heard],fin).
-%word(vt([np,s(interog,B,G-G),s(fin),s(comp,B,G-G),s(inf,B,G-G)]),[knew],fin).
-%word(vt([np,s(interog,B,G-G),s(fin),s(comp,B,G-G),s(inf,B,G-G)]),[verified],fin).
-%word(vt([np,s(interog,B,G-G),s(fin),s(comp,B,G-G),s(inf,B,G-G)]),[established],fin).
-%word(vt([s(fin),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[thought],fin).
-%word(vt([s(fin),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[denied],fin).
-%word(vt([np,s(fin),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[believed],fin).
-%word(vt([np,s(fin),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[suspected],fin).
-%word(vt([np,s(interog,B,G-G),s(fin),s(comp,B,G-G),s(bse,B,G-G)]),[suggested],fin).
-%word(vt([np,s(interog,B,G-G),s(fin),s(comp,B,G-G)]),[indicated],fin).
-%word(vt([s(interog,B,G-G),s(fin),s(comp,B,G-G)]),[said],fin).
-%word(vt([np,s(interog,B,G-G),s(inf,B,G-G)]),[told],fin).
-%word(vt([np,s(interog,B,G-G),s(inf,B,G-G)]),[asked],fin).
-%word(vt([s(interog,B,G-G)]),[wondered],fin).
-%word(vt([s(interog,B,G-G)]),[inquired],fin).
+%word(vt([np,s(interog,B,GI-GO),s(bse,B,GI-GO),s(comp,B,GI-GO)]),[saw],fin).
+%word(vt([np,s(interog,B,GI-GO),s(fin),s(comp,B,GI-GO),s(inf,B,GI-GO)]),[heard],fin).
+%word(vt([np,s(interog,B,GI-GO),s(fin),s(comp,B,GI-GO),s(inf,B,GI-GO)]),[knew],fin).
+%word(vt([np,s(interog,B,GI-GO),s(fin),s(comp,B,GI-GO),s(inf,B,GI-GO)]),[verified],fin).
+%word(vt([np,s(interog,B,GI-GO),s(fin),s(comp,B,GI-GO),s(inf,B,GI-GO)]),[established],fin).
+%word(vt([s(fin),s(comp,B,GI-GO),s(nv,B,GI-GO),s(inf,B,GI-GO)]),[thought],fin).
+%word(vt([s(fin),s(comp,B,GI-GO),s(nv,B,GI-GO),s(inf,B,GI-GO)]),[denied],fin).
+%word(vt([np,s(fin),s(comp,B,GI-GO),s(nv,B,GI-GO),s(inf,B,GI-GO)]),[believed],fin).
+%word(vt([np,s(fin),s(comp,B,GI-GO),s(nv,B,GI-GO),s(inf,B,GI-GO)]),[suspected],fin).
+%word(vt([np,s(interog,B,GI-GO),s(fin),s(comp,B,GI-GO),s(bse,B,GI-GO)]),[suggested],fin).
+%word(vt([np,s(interog,B,GI-GO),s(fin),s(comp,B,GI-GO)]),[indicated],fin).
+%word(vt([s(interog,B,GI-GO),s(fin),s(comp,B,GI-GO)]),[said],fin).
+%word(vt([np,s(interog,B,GI-GO),s(inf,B,GI-GO)]),[told],fin).
+%word(vt([np,s(interog,B,GI-GO),s(inf,B,GI-GO)]),[asked],fin).
+%word(vt([s(interog,B,GI-GO)]),[wondered],fin).
+%word(vt([s(interog,B,GI-GO)]),[inquired],fin).
 
 
-lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believed,P,N,fin).
-lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believed,P,N,ppl).
-lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,P,N,bse).
-lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,1,sg,fin).
-lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,2,sg,fin).
-lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believes,3,sg,fin).
-lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,P,pl,fin).
+lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believed,P,N,fin).
+lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believed,P,N,ppl).
+lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believe,P,N,bse).
+lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believe,1,sg,fin).
+lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believe,2,sg,fin).
+lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believes,3,sg,fin).
+lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believe,P,pl,fin).
 
 
-lex(vt([s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),thought,P,N,ppl).
-lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(bse,B,G-G)]),suggested,P,N,ppl).
-lex(vt([s(interog,B,G-G)]),wondered,P,N,ppl).
-lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(inf,B,G-G)]),asked,P,N,ppl).
-lex(vt([s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),thought,P,N,fin).
-lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(bse,B,G-G)]),suggested,P,N,fin).
-lex(vt([s(interog,B,G-G)]),wondered,P,N,fin).
-lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(inf,B,G-G)]),asked,P,N,fin).
+lex(vt([s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),thought,P,N,ppl).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(bse,B)]),suggested,P,N,ppl).
+lex(vt([s(interog,B)]),wondered,P,N,ppl).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),asked,P,N,ppl).
+lex(vt([s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),thought,P,N,fin).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(bse,B)]),suggested,P,N,fin).
+lex(vt([s(interog,B)]),wondered,P,N,fin).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),asked,P,N,fin).
 
-word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(bse,B,G-G),s(comp,B,G-G)]),[saw],P,N,fin).
-word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[heard],P,N,fin).
-word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[knew],P,N,fin).
-word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[verified],P,N,fin).
-word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[established],P,N,fin).
-word(vt([s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[denied],P,N,fin).
-word(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[suspected],P,N,fin).
-word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G)]),[indicated],P,N,fin).
-word(vt([s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G)]),[said],P,N,fin).
-word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(inf,B,G-G)]),[told],P,N,fin).
-word(vt([s(interog,B,G-G)]),[inquired],P,N,fin).
+word(vt([np(S,N1,P1,C),s(interog,B),s(bse,B),s(comp,B)]),[saw],P,N,fin).
+word(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(inf,B)]),[heard],P,N,fin).
+word(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(inf,B)]),[knew],P,N,fin).
+word(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(inf,B)]),[verified],P,N,fin).
+word(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(inf,B)]),[established],P,N,fin).
+word(vt([s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),[denied],P,N,fin).
+word(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),[suspected],P,N,fin).
+word(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B)]),[indicated],P,N,fin).
+word(vt([s(interog,B),s(decl,B),s(comp,B)]),[said],P,N,fin).
+word(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),[told],P,N,fin).
+word(vt([s(interog,B)]),[inquired],P,N,fin).
 
 
 

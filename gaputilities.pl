@@ -70,13 +70,13 @@ d_daughters([First|Rest], Indent):-             % .. otherwise ..
 calcindent(N, N1):-
         N1 is N + 2.
 
-complement_structured(Subcat,Complement,np(Complement,N,P,C)) :-
-	member(np(Complement,N,P,C),Subcat).
-complement_structured(Subcat,Complement,Term) :-
+complement_structured(Subcat,Complement,np(Complement,N,P,C,GI-GO),GI-GO) :-
+	member(np(Complement,N,P,C,GI-GO),Subcat).
+complement_structured(Subcat,Complement,Term,GI-GO) :-
 	member(Element,Subcat),
 	Element =.. [Category|Arguments],
 	Category \== np,
-	append([Category|Arguments],[Complement],Object),
+	append([Category|Arguments,GI-GO],[Complement],Object),
 	Term =.. Object.
 
 tab(0).
