@@ -379,8 +379,8 @@ s(Type,X,B,G-G,[does,which,cat,sal,think,val,believes],[]).
 
 % initial fragment doesn't have information about
 % scomp barriers, or gaps.
-s(Type,Parse,BarrierInfo,GapInfo,Start,Finish) :-
-	s(Type,Parse,Start,Finish).
+%s(Type,Parse,BarrierInfo,GapInfo,Start,Finish) :-
+%	s(Type,Parse,Start,Finish).
 
 
 
