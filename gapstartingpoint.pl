@@ -49,7 +49,7 @@ s(interog,[q, [W, [s, [NP,VP]]]],B, G-G) -->
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin). % see below
 
 % a basic delarative
-s(decl,[s, [NP,VP]],B, G-G) -->
+s(decl,[s, [NP,VP]],B, nogap-nogap) -->
 	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,fin,nogap-nogap).
 
@@ -83,7 +83,7 @@ np([np(Num,Case), [PN]],_,Num,Case,nogap-nogap) -->
 np([np(Num,Case), [PN]],Per,Num,Case,nogap-nogap) -->
 	pro(pro,PN,Per,Num,Case).
 
-np([np(Num,Case)],Per,Num,Case,gap-nogap) --> []
+np([np(Num,Case)],Per,Num,Case,gap-nogap) --> [].
 
 nom(N,Num) --> n(N,Num).
 nom([nom, [A, N]],Num) --> adj(A,Type), nom(N,Num).

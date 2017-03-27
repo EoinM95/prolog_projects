@@ -11,6 +11,11 @@
 % note that X is shared with test, and test is used
 % in the utilities.
 
+%s(Type,X,B,G-G,[the,man,sleeps,on,the,couch],[]).
+%vp(Vtype,VP,Per,Num,Form,nogap-nogap,[sleeps,on,the,couch],[]).
+%np(NP,Per,Num,_,nogap-nogap,[the,man],[]).
+%nom(Y,X,[man],[]).
+
 test(1,X) :-
 	s(Type,X,B,G-G,[the,man,sleeps,on,the,couch],[]).
 test(a1,X) :-
