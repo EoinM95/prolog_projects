@@ -82,6 +82,8 @@ s(comp,[Comp, [S]],B, GI-GO) -->
 np([np(Num,Case), [DET,N]],3,Num,Case,nogap-nogap) -->
 	det(DET,Num),
 	nom(N,Num).
+np([np(Num,Case)],3,Num,Case,nogap-nogap) -->
+  	nom(N,pl).
 np([np(Num,Case), [PN]],_,Num,Case,nogap-nogap) -->
 	pn(PN,Num).
 np([np(Num,Case), [PN]],Per,Num,Case,nogap-nogap) -->
@@ -444,6 +446,7 @@ lex(vt(norm),looked,P,N,fin).
 lex(vt(norm),[looked,up],P,N,fin).
 
 lex(vt(norm),hated,P,N,fin).
+lex(vt(norm),hates,3,sg,fin).
 lex(vt(norm),hate,P,N,bse).
 
 lex(vtr,bet,P,N,ppl).

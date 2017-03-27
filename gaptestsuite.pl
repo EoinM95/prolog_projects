@@ -13,7 +13,7 @@
 
 %s(Type,X,B,G-G,[the,man,sleeps,on,the,couch],[]).
 %vp(Vtype,VP,Per,Num,Form,nogap-nogap,[sleeps,on,the,couch],[]).
-%np(NP,Per,Num,_,nogap-nogap,[the,man],[]).
+%np(NP,Per,Num,_,nogap-nogap,[cats],[]).
 %nom(Y,X,[man],[]).
 
 test(1,X) :-
@@ -21,13 +21,13 @@ test(1,X) :-
 test(a1,X) :-
 	s(Type,X,B,G-G,[the,man,sleeps,on,the,ugly,couch],[]).
 test(b1,X) :-
-	s(decl,X,B,G-G,[the,couch,the,man,sleeps,on],[]).% fails, arguably should
+	s(decl,X,B,G-G,[the,couch,the,man,sleeps,on],[]).
 test(c1,X) :-
-	s(Type,X,B,G-G,[on,the,couch,the,man,sleeps],[]). % fails, should pass
+	s(Type,X,B,G-G,[on,the,couch,the,man,sleeps],[]).
 test(d1,X) :-
-	s(Type,X,B,G-G,[the,ugly,couch,the,man,sleeps,on],[]). % fails, arguably should
+	s(Type,X,B,G-G,[the,ugly,couch,the,man,sleeps,on],[]).
 test(e1,X) :-
-	s(Type,X,B,G-G,[on,the,ugly,couch,the,man,sleeps],[]). % fails, should pass
+	s(Type,X,B,G-G,[on,the,ugly,couch,the,man,sleeps],[]).
 test(f1,X) :-
 	s(Type,X,B,G-G,[couch,the,man,sleeps,on,the,ugly],[]). %no
 
