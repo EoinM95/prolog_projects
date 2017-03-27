@@ -22,14 +22,14 @@ s(decl,[s,[[topic,Topic],[comment,VP]]],B, G-G) -->
 
 % topicalization
 s(decl,[s,[[topic,Topic],[comment,[NP,VP]]]],B, G-G) -->
-	np(Topic,Per1,Num2,obj),
-	np(NP,Per,Num,nom),
+	Topic,Per1,Num2,obj),
+	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin).
 
 % sub-aux inversion questions
 s(interog,[q, [V,NP,VP]],B, G-G) -->
 	v(aux,V,Per,Num,fin),
-	np(NP,Per,Num,nom),
+	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,bse,nogap-nogap).
 
 % sub-aux inversion questions
@@ -45,23 +45,23 @@ s(interog,[q, [W, VP]],B, G-G) -->
 % role-query questions (of object)
 s(interog,[q, [W, [s, [NP,VP]]]],B, G-G) -->
 	wh_word(W,role,P,N,C),
-	np(NP,Per,Num,nom),
+	np(NP,Per,Num,nom, nogap-nogap),
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin). % see below
 
 % a basic delarative
 s(decl,[s, [NP,VP]],B, G-G) -->
-	np(NP,Per,Num,nom),
+	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,fin,nogap-nogap).
 
 
 % a nonfinite basic delarative
 s(inf,[s, [NP,VP]],B, G-G) -->
-	np(NP,Per,Num,nom),
+	np(NP,Per,Num,nom,nogap-nogap),
 	vp(inf,VP,Per,Num,inf,nogap-nogap).
 
 s(nv,[s, [NP1,NP2]],B, G-G) -->
-	np(NP1,Per,Num,obj),
-	np(NP2,Per1,Num1,_).
+	np(NP1,Per,Num,obj,nogap-nogap),
+	np(NP2,Per1,Num1,_,nogap-nogap).
 
 
 
@@ -75,12 +75,12 @@ s(comp,[Comp, [S]],B, G-G) -->
 % 2 -- proper names can be either 2nd or 3rd
 % 3 -- pronouns are marked for case (thus, case is inherited from
 %      the pronoun.  case comes from the verb in the other instances
-np([np(Num,Case), [DET,N]],3,Num,Case) -->
+np([np(Num,Case), [DET,N]],3,Num,Case,nogap-nogap) -->
 	det(DET,Num),
 	nom(N,Num).
-np([np(Num,Case), [PN]],_,Num,Case) -->
+np([np(Num,Case), [PN]],_,Num,Case,nogap-nogap) -->
 	pn(PN,Num).
-np([np(Num,Case), [PN]],Per,Num,Case) -->
+np([np(Num,Case), [PN]],Per,Num,Case,nogap-nogap) -->
 	pro(pro,PN,Per,Num,Case).
 
 
@@ -96,7 +96,7 @@ relc(Type,[relc, [Pro,VP]]) -->
 % object relatives are tedious using this flat structure
 relc(Type,[relc, [Pro,N,V]]) -->
 	pro(relpro,Pro,_,_,nom),
-	np(N,Per,Num,nom),
+	np(N,Per,Num,nom,nogap-nogap),
 	vc(V,Per,Num,Form).
 % vp(vc,[vp(Num,Form), [V,N]],Per,Num,Form) -->
 
@@ -104,44 +104,44 @@ relc(Type,[relc, [Pro,N,V]]) -->
 
 relc(Type,[relc, [Pro,N,V]]) -->
 	pro(relpro,Pro,_,_,nom),
-	np(N,Per,Num,nom),
+	np(N,Per,Num,nom,nogap-nogap),
 	vt(V,Per,Num,Form).
 %vp(vt,[vp(Num,Form), [V,N]],Per,Num,Form) -->
 
 relc(Type,[relc, [Pro,N,V,A]]) -->
 	pro(relpro,Pro,_,_,nom),
-	np(N,Per,Num,nom),
+	np(N,Per,Num,nom,nogap-nogap),
 	vt(V,Per,Num,Form),
 	adjunct(A).
 
 relc(Type,[relc, [Pro,N,V,N1]]) -->
 	pro(relpro,Pro,_,_,nom),
-	np(N,Per,Num,nom),
+	np(N,Per,Num,nom,nogap-nogap),
 	vd(V,Per,Num,Form),
-	np(N1,_,_,obj).
+	np(N1,_,_,obj,nogap-nogap).
 %vp(vd,[vp(Num,Form), [V,N,P]],Per,Num,Form) -->
 
 relc(Type,[relc, [Pro,N,V,P]]) -->
 	pro(relpro,Pro,_,_,nom),
-	np(N,Per,Num,nom),
+	np(N,Per,Num,nom,nogap-nogap),
 	vd(V,Per,Num,Form),
 	pp(to,P).
 %vp(vd,[vp(Num,Form), [V,N,P]],Per,Num,Form) -->
 
 relc(Type,[relc, [Pro,N,V,N2,Scomp]]) -->
 	pro(relpro,Pro,_,_,nom),
-	np(N,Per,Num,nom),
+	np(N,Per,Num,nom,nogap-nogap),
 	vtr(V,Per,Num,Form),
-	np(N2,_,_,obj),
+	np(N2,_,_,obj,nogap-nogap),
 	s(comp,Scomp, B, G-G).
 %vp(vtr,[vp(Num,Form), [V,N1,N2,Scomp]],Per,Num,Form) -->
 
 relc(Type,[relc, [Pro,N,V,N1,N2]]) -->
 	pro(relpro,Pro,_,_,nom),
-	np(N,Per,Num,nom),
+	np(N,Per,Num,nom,nogap-nogap),
 	vtr(V,Per,Num,Form),
-	np(N1,_,_,obj),
-	np(N2,_,_,obj).
+	np(N1,_,_,obj,nogap-nogap),
+	np(N2,_,_,obj,nogap-nogap).
 
 
 
@@ -154,7 +154,7 @@ vp(inf,[infinitive, VS],Per,Num,inf,G-G) -->
 
 vp(vc,[vp(Num,Form), [V,N]],Per,Num,Form,G-G) -->
 	vc(V,Per,Num,Form),
-	np(N,_,_,nom).
+	np(N,_,_,nom,nogap-nogap).
 vp(vc,[vp(sg,Form), [V,PP]],Per,sg,Form,G-G) -->
 	vc(V,Per,sg,Form),
 	pp(Type,PP).
@@ -169,24 +169,24 @@ vp(vt,[vp(Num,Form), [[vt(norm,Num),V],Complement]],Per,Num,Form,G-G) -->
 
 vp(vt,[vp(Num,Form), [[vt(norm,Num),V],N]],Per,Num,Form,G-G) -->
 	vt([vt(norm,Num),V],Per,Num,Form),
-	np(N,_,_,obj).
+	np(N,_,_,obj,nogap-nogap).
 vp(vt,[vp(Num,Form), [V,N,A]],Per,Num,Form,G-G) -->
 	vt(V,Per,Num,Form),
-	np(N,_,_,obj),
+	np(N,_,_,obj,nogap-nogap),
 	adjunct(A).
 vp(vd,[vp(Num,Form), [V,N,P]],Per,Num,Form,G-G) -->
 	vd(V,Per,Num,Form),
-	np(N,_,_,obj),
+	np(N,_,_,obj,nogap-nogap),
 	pp(to,P).
 vp(vd,[vp(Num,Form), [V,N1,N2]],Per,Num,Form,G-G) -->
 	vd(V,Per,Num,Form),
-	np(N1,_,_,obj),
-	np(N2,_,_,obj).
+	np(N1,_,_,obj,nogap-nogap),
+	np(N2,_,_,obj,nogap-nogap).
 
 vp(vtr,[vp(Num,Form), [V,N1,N2,Scomp]],Per,Num,Form,G-G) -->
 	vtr(V,Per,Num,Form),
-	np(N1,_,_,obj),
-	np(N2,_,_,obj),
+	np(N1,_,_,obj,nogap-nogap),
+	np(N2,_,_,obj,nogap-nogap),
 	s(comp,Scomp,B, G-G).
 
 % passive
@@ -213,18 +213,18 @@ vpobjgone(vd,[vp(Num,Form), [V,P]],Per,Num,Form) -->
 	pp(to,P).
 vpobjgone(vd,[vp(Num,Form), [V,N2]],Per,Num,Form) -->
 	vd(V,Per,Num,Form),
-	np(N2,_,_,obj).
+	np(N2,_,_,obj,nogap-nogap).
 vpobjgone(vtr,[vp(Num,Form), [V,N1,Scomp]],Per,Num,Form) -->
 	vtr(V,Per,Num,Form),
-	np(N1,_,_,obj),
+	np(N1,_,_,obj,nogap-nogap),
 	s(comp,Scomp,B, G-G).
 vpobjgone(vtr,[vp(Num,Form), [V,N1,N2]],Per,Num,Form) -->
 	vtr(V,Per,Num,Form),
-	np(N1,_,_,obj),
-	np(N2,_,_,obj).
+	np(N1,_,_,obj,nogap-nogap),
+	np(N2,_,_,obj,nogap-nogap).
 
 
-pp(Type,[pp, [P,NP]]) --> p(Type,P), np(NP,_,_,obj).
+pp(Type,[pp, [P,NP]]) --> p(Type,P), np(NP,_,_,obj,nogap-nogap).
 adjunct([adjunct, PP]) --> pp(Type,PP).
 
 
@@ -377,34 +377,34 @@ lex(aux,do,P,pl,fin).
 %word(vt([s(interog,B,G-G)]),[inquired],fin).
 
 
-lex(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believed,P,N,fin).
-lex(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believed,P,N,ppl).
-lex(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,P,N,bse).
-lex(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,1,sg,fin).
-lex(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,2,sg,fin).
-lex(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believes,3,sg,fin).
-lex(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,P,pl,fin).
+lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believed,P,N,fin).
+lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believed,P,N,ppl).
+lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,P,N,bse).
+lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,1,sg,fin).
+lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,2,sg,fin).
+lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believes,3,sg,fin).
+lex(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),believe,P,pl,fin).
 
 
 lex(vt([s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),thought,P,N,ppl).
-lex(vt([np(S,N1,P1,C),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(bse,B,G-G)]),suggested,P,N,ppl).
+lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(bse,B,G-G)]),suggested,P,N,ppl).
 lex(vt([s(interog,B,G-G)]),wondered,P,N,ppl).
-lex(vt([np(S,N1,P1,C),s(interog,B,G-G),s(inf,B,G-G)]),asked,P,N,ppl).
+lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(inf,B,G-G)]),asked,P,N,ppl).
 lex(vt([s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),thought,P,N,fin).
-lex(vt([np(S,N1,P1,C),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(bse,B,G-G)]),suggested,P,N,fin).
+lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(bse,B,G-G)]),suggested,P,N,fin).
 lex(vt([s(interog,B,G-G)]),wondered,P,N,fin).
-lex(vt([np(S,N1,P1,C),s(interog,B,G-G),s(inf,B,G-G)]),asked,P,N,fin).
+lex(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(inf,B,G-G)]),asked,P,N,fin).
 
-word(vt([np(S,N1,P1,C),s(interog,B,G-G),s(bse,B,G-G),s(comp,B,G-G)]),[saw],P,N,fin).
-word(vt([np(S,N1,P1,C),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[heard],P,N,fin).
-word(vt([np(S,N1,P1,C),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[knew],P,N,fin).
-word(vt([np(S,N1,P1,C),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[verified],P,N,fin).
-word(vt([np(S,N1,P1,C),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[established],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(bse,B,G-G),s(comp,B,G-G)]),[saw],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[heard],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[knew],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[verified],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G),s(inf,B,G-G)]),[established],P,N,fin).
 word(vt([s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[denied],P,N,fin).
-word(vt([np(S,N1,P1,C),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[suspected],P,N,fin).
-word(vt([np(S,N1,P1,C),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G)]),[indicated],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(decl,B,G-G),s(comp,B,G-G),s(nv,B,G-G),s(inf,B,G-G)]),[suspected],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G)]),[indicated],P,N,fin).
 word(vt([s(interog,B,G-G),s(decl,B,G-G),s(comp,B,G-G)]),[said],P,N,fin).
-word(vt([np(S,N1,P1,C),s(interog,B,G-G),s(inf,B,G-G)]),[told],P,N,fin).
+word(vt([np(S,N1,P1,C,G-G),s(interog,B,G-G),s(inf,B,G-G)]),[told],P,N,fin).
 word(vt([s(interog,B,G-G)]),[inquired],P,N,fin).
 
 
