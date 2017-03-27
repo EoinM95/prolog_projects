@@ -83,10 +83,11 @@ np([np(Num,Case), [PN]],_,Num,Case,nogap-nogap) -->
 np([np(Num,Case), [PN]],Per,Num,Case,nogap-nogap) -->
 	pro(pro,PN,Per,Num,Case).
 
+np([np(Num,Case)],Per,Num,Case,gap-nogap) --> []
 
 nom(N,Num) --> n(N,Num).
 nom([nom, [A, N]],Num) --> adj(A,Type), nom(N,Num).
-nom([nom, [N, A]],Num) --> n(N,Num), adjunct(A).
+nom([nom, [N, A]],Num) --> n(N,Num), adjunct(A, G-G).
 
 % subject relatives go in one fell swoop
 relc(Type,[relc, [Pro,VP]]) -->
@@ -112,7 +113,7 @@ relc(Type,[relc, [Pro,N,V,A]]) -->
 	pro(relpro,Pro,_,_,nom),
 	np(N,Per,Num,nom,nogap-nogap),
 	vt(V,Per,Num,Form),
-	adjunct(A).
+	adjunct(A, G-G).
 
 relc(Type,[relc, [Pro,N,V,N1]]) -->
 	pro(relpro,Pro,_,_,nom),
@@ -125,7 +126,7 @@ relc(Type,[relc, [Pro,N,V,P]]) -->
 	pro(relpro,Pro,_,_,nom),
 	np(N,Per,Num,nom,nogap-nogap),
 	vd(V,Per,Num,Form),
-	pp(to,P).
+	pp(to,P, G-G).
 %vp(vd,[vp(Num,Form), [V,N,P]],Per,Num,Form) -->
 
 relc(Type,[relc, [Pro,N,V,N2,Scomp]]) -->
@@ -154,14 +155,14 @@ vp(inf,[infinitive, VS],Per,Num,inf,G-G) -->
 
 vp(vc,[vp(Num,Form), [V,N]],Per,Num,Form,G-G) -->
 	vc(V,Per,Num,Form),
-	np(N,_,_,nom,nogap-nogap).
+	np(N,_,_,nom,G-G).
 vp(vc,[vp(sg,Form), [V,PP]],Per,sg,Form,G-G) -->
 	vc(V,Per,sg,Form),
-	pp(Type,PP).
+	pp(Type,PP,G-G).
 
 vp(vi,[vp(Num,Form), [V]],Per,Num,Form,G-G) --> vi(V,Per,Num,Form).
-vp(vi,[vp(Num,Form), [V,A]],Per,Num,Form,G-G) --> vi(V,Per,Num,Form),adjunct(A).
-vp(vt,[vp(Num,Form), [[vt(norm,Num),V],Complement]],Per,Num,Form,G-G) -->
+vp(vi,[vp(Num,Form), [V,A]],Per,Num,Form,G-G) --> vi(V,Per,Num,Form),adjunct(A,G-G).
+vp(vt,[vp(Num,Form), [[vt(norm,Num),V],Complement]],Per,Num,Form,_) -->
 	vt([vt(Subcat,Num),V],Per,Num,Form),
 	{complement_structured(Subcat,Complement,Term)},
 	 Term.
@@ -169,63 +170,63 @@ vp(vt,[vp(Num,Form), [[vt(norm,Num),V],Complement]],Per,Num,Form,G-G) -->
 
 vp(vt,[vp(Num,Form), [[vt(norm,Num),V],N]],Per,Num,Form,G-G) -->
 	vt([vt(norm,Num),V],Per,Num,Form),
-	np(N,_,_,obj,nogap-nogap).
-vp(vt,[vp(Num,Form), [V,N,A]],Per,Num,Form,G-G) -->
+	np(N,_,_,obj,G-G).
+vp(vt,[vp(Num,Form), [V,N,A]],Per,Num,Form,GapIn-GapOut) -->
 	vt(V,Per,Num,Form),
-	np(N,_,_,obj,nogap-nogap),
-	adjunct(A).
-vp(vd,[vp(Num,Form), [V,N,P]],Per,Num,Form,G-G) -->
+	np(N,_,_,obj,GapIn-GapMid),
+	adjunct(A, GapMid-GapOut).
+vp(vd,[vp(Num,Form), [V,N,P]],Per,Num,Form,GapIn-GapOut) -->
 	vd(V,Per,Num,Form),
-	np(N,_,_,obj,nogap-nogap),
-	pp(to,P).
-vp(vd,[vp(Num,Form), [V,N1,N2]],Per,Num,Form,G-G) -->
+	np(N,_,_,obj,GapIn-GapMid),
+	pp(to,P,GapMid-GapOut).
+vp(vd,[vp(Num,Form), [V,N1,N2]],Per,Num,Form,GapIn-GapOut) -->
 	vd(V,Per,Num,Form),
-	np(N1,_,_,obj,nogap-nogap),
-	np(N2,_,_,obj,nogap-nogap).
+	np(N1,_,_,obj,GapIn-GapMid),
+	np(N2,_,_,obj,GapMid-GapOut).
 
-vp(vtr,[vp(Num,Form), [V,N1,N2,Scomp]],Per,Num,Form,G-G) -->
+vp(vtr,[vp(Num,Form), [V,N1,N2,Scomp]],Per,Num,Form,GapIn-GapOut) -->
 	vtr(V,Per,Num,Form),
-	np(N1,_,_,obj,nogap-nogap),
-	np(N2,_,_,obj,nogap-nogap),
-	s(comp,Scomp,B, G-G).
+	np(N1,_,_,obj,GapIn-GapMid1),
+	np(N2,_,_,obj,GapMid1-GapMid2),
+	s(comp,Scomp,B, GapMid2-GapOut).
 
 % passive
-vp(Type,[vp(Num,Form), [V,VP]],Per,Num,fin,G-G) -->
+vp(Type,[vp(Num,Form), [V,VP]],Per,Num,fin,_) -->
 	v(paux,V,Per,Num,fin),
 	vp(Type,VP,_,_,ppl,gap-nogap).%vpobjgone(Type,VP,_,_,ppl).
 
 vp(Type,[vp(Num,Form), [V,VP,PP]],Per,Num,fin,G-G) -->
 	v(paux,V,Per,Num,fin),
 	vp(Type,VP,_,_,ppl,gap-nogap).%vpobjgone(Type,VP,_,_,ppl),
-	pp(by,PP).
+	pp(by,PP, G-G).
 
 % passive component constituency hack
 % this is expressively equivalent as a constituent
 % name to the slash representation; however, it
 % involves ill-motivated constituent structure.
-vpobjgone(vt,[vp(Num,Form), [V]],Per,Num,Form) -->
-	vt(V,Per,Num,Form).
-vpobjgone(vt,[vp(Num,Form), [V,A]],Per,Num,Form) -->
-	vt(V,Per,Num,Form),
-	adjunct(A).
-vpobjgone(vd,[vp(Num,Form), [V,P]],Per,Num,Form) -->
-	vd(V,Per,Num,Form),
-	pp(to,P).
-vpobjgone(vd,[vp(Num,Form), [V,N2]],Per,Num,Form) -->
-	vd(V,Per,Num,Form),
-	np(N2,_,_,obj,nogap-nogap).
-vpobjgone(vtr,[vp(Num,Form), [V,N1,Scomp]],Per,Num,Form) -->
-	vtr(V,Per,Num,Form),
-	np(N1,_,_,obj,nogap-nogap),
-	s(comp,Scomp,B, G-G).
-vpobjgone(vtr,[vp(Num,Form), [V,N1,N2]],Per,Num,Form) -->
-	vtr(V,Per,Num,Form),
-	np(N1,_,_,obj,nogap-nogap),
-	np(N2,_,_,obj,nogap-nogap).
+% vpobjgone(vt,[vp(Num,Form), [V]],Per,Num,Form) -->
+% 	vt(V,Per,Num,Form).
+% vpobjgone(vt,[vp(Num,Form), [V,A]],Per,Num,Form) -->
+% 	vt(V,Per,Num,Form),
+% 	adjunct(A).
+% vpobjgone(vd,[vp(Num,Form), [V,P]],Per,Num,Form) -->
+% 	vd(V,Per,Num,Form),
+% 	pp(to,P).
+% vpobjgone(vd,[vp(Num,Form), [V,N2]],Per,Num,Form) -->
+% 	vd(V,Per,Num,Form),
+% 	np(N2,_,_,obj,nogap-nogap).
+% vpobjgone(vtr,[vp(Num,Form), [V,N1,Scomp]],Per,Num,Form) -->
+% 	vtr(V,Per,Num,Form),
+% 	np(N1,_,_,obj,nogap-nogap),
+% 	s(comp,Scomp,B, G-G).
+% vpobjgone(vtr,[vp(Num,Form), [V,N1,N2]],Per,Num,Form) -->
+% 	vtr(V,Per,Num,Form),
+% 	np(N1,_,_,obj,nogap-nogap),
+% 	np(N2,_,_,obj,nogap-nogap).
 
 
-pp(Type,[pp, [P,NP]]) --> p(Type,P), np(NP,_,_,obj,nogap-nogap).
-adjunct([adjunct, PP]) --> pp(Type,PP).
+pp(Type,[pp, [P,NP]],G-G) --> p(Type,P), np(NP,_,_,obj,G-G).
+adjunct([adjunct, PP],G-G) --> pp(Type,PP,G-G).
 
 
 
