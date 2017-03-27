@@ -10,40 +10,40 @@
 %
 
 % cleft
-s(decl,[s,[[pr(exp), [W]],[topic,VP],[comment,Topic]]],B, G-G) -->
+s(decl,[s,[[pr(exp), [W]],[topic,VP],[comment,Topic]]],B, GI-GO) -->
         pro(exp,[pr(exp), [W]],Per,Num,Case),
-        vp(vc,VP,P,N,fin,G-G),
+        vp(vc,VP,P,N,fin,GI-GO),
         relc([that],Topic).
 
 % pseudocleft
-s(decl,[s,[[topic,Topic],[comment,VP]]],B, G-G) -->
+s(decl,[s,[[topic,Topic],[comment,VP]]],B, GI-GO) -->
         relc([what],Topic),
-        vp(vc,VP,P,N,fin,G-G).
+        vp(vc,VP,P,N,fin,GI-GO).
 
 % topicalization
-s(decl,[s,[[topic,Topic],[comment,[NP,VP]]]],B, G-G) -->
+s(decl,[s,[[topic,Topic],[comment,[NP,VP]]]],B, _) -->
 	np(Topic,Per1,Num2,obj,nogap-nogap),
 	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin).
 
 % sub-aux inversion questions
-s(interog,[q, [V,NP,VP]],B, G-G) -->
+s(interog,[q, [V,NP,VP]],B,_) -->
 	v(aux,V,Per,Num,fin),
 	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,bse,nogap-nogap).
 
 % sub-aux inversion questions
-s(interog,[q, [W, S]],B, G-G) -->
+s(interog,[q, [W, S]],B, GI-GO) -->
 	wh_word(W,adv,P,N,C),
-	s(decl,S, B, G-G).
+	s(decl,S, B, GI-GO).
 
 % role-query questions (of subject)
-s(interog,[q, [W, VP]],B, G-G) -->
+s(interog,[q, [W, VP]],B, GI-GO) -->
 	wh_word(W,role,P,N,C),
 	vp(Type,VP,_,_,fin,nogap-nogap).
 
 % role-query questions (of object)
-s(interog,[q, [W, [s, [NP,VP]]]],B, G-G) -->
+s(interog,[q, [W, [s, [NP,VP]]]],B, _) -->
 	wh_word(W,role,P,N,C),
 	np(NP,Per,Num,nom, nogap-nogap),
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin). % see below
@@ -53,21 +53,25 @@ s(decl,[s, [NP,VP]],B, nogap-nogap) -->
 	np(NP,Per,Num,nom,nogap-nogap),
 	vp(Type,VP,Per,Num,fin,nogap-nogap).
 
+s(decl,[s, [A,NP,VP]],B, nogap-nogap) -->
+    adjunct(A, nogap-nogap),
+  	np(NP,Per,Num,nom,nogap-nogap),
+  	vp(Type,VP,Per,Num,fin,gap-nogap).
 
 % a nonfinite basic delarative
-s(inf,[s, [NP,VP]],B, G-G) -->
+s(inf,[s, [NP,VP]],B, _) -->
 	np(NP,Per,Num,nom,nogap-nogap),
 	vp(inf,VP,Per,Num,inf,nogap-nogap).
 
-s(nv,[s, [NP1,NP2]],B, G-G) -->
+s(nv,[s, [NP1,NP2]],B, _) -->
 	np(NP1,Per,Num,obj,nogap-nogap),
 	np(NP2,Per1,Num1,_,nogap-nogap).
 
 
 
-s(comp,[Comp, [S]],B, G-G) -->
+s(comp,[Comp, [S]],B, GI-GO) -->
 	comp(Comp),
-	s(Form,S,B, G-G),
+	s(Form,S,B, GI-GO),
 	{Form \== comp}.
 
 % np classes
@@ -148,27 +152,27 @@ relc(Type,[relc, [Pro,N,V,N1,N2]]) -->
 
 % subcatorization frames
 % here, case assignment from verbs isn't deemed lexical
-vp(inf,[infinitive, VS],Per,Num,inf,G-G) -->
+vp(inf,[infinitive, VS],Per,Num,inf,GapIn-GapOut) -->
 	vinf([to],Per,Num,inf),
-	vp(Type,VS,_,_,bse,G-G).
+	vp(Type,VS,_,_,bse,GapIn-GapOut).
 
 
-vp(vc,[vp(Num,Form), [V,N]],Per,Num,Form,G-G) -->
+vp(vc,[vp(Num,Form), [V,N]],Per,Num,Form,GapIn-GapOut) -->
 	vc(V,Per,Num,Form),
 	np(N,_,_,nom,G-G).
-vp(vc,[vp(sg,Form), [V,PP]],Per,sg,Form,G-G) -->
+vp(vc,[vp(sg,Form), [V,PP]],Per,sg,Form,GapIn-GapOut) -->
 	vc(V,Per,sg,Form),
 	pp(Type,PP,G-G).
 
-vp(vi,[vp(Num,Form), [V]],Per,Num,Form,G-G) --> vi(V,Per,Num,Form).
-vp(vi,[vp(Num,Form), [V,A]],Per,Num,Form,G-G) --> vi(V,Per,Num,Form),adjunct(A,G-G).
+vp(vi,[vp(Num,Form), [V]],Per,Num,Form,_) --> vi(V,Per,Num,Form).
+vp(vi,[vp(Num,Form), [V,A]],Per,Num,Form,GapIn-GapOut) --> vi(V,Per,Num,Form),adjunct(A,GapIn-GapOut).
 vp(vt,[vp(Num,Form), [[vt(norm,Num),V],Complement]],Per,Num,Form,_) -->
 	vt([vt(Subcat,Num),V],Per,Num,Form),
 	{complement_structured(Subcat,Complement,Term)},
 	 Term.
 
 
-vp(vt,[vp(Num,Form), [[vt(norm,Num),V],N]],Per,Num,Form,G-G) -->
+vp(vt,[vp(Num,Form), [[vt(norm,Num),V],N]],Per,Num,Form,GapIn-GapOut) -->
 	vt([vt(norm,Num),V],Per,Num,Form),
 	np(N,_,_,obj,G-G).
 vp(vt,[vp(Num,Form), [V,N,A]],Per,Num,Form,GapIn-GapOut) -->
@@ -195,10 +199,10 @@ vp(Type,[vp(Num,Form), [V,VP]],Per,Num,fin,_) -->
 	v(paux,V,Per,Num,fin),
 	vp(Type,VP,_,_,ppl,gap-nogap).%vpobjgone(Type,VP,_,_,ppl).
 
-vp(Type,[vp(Num,Form), [V,VP,PP]],Per,Num,fin,G-G) -->
+vp(Type,[vp(Num,Form), [V,VP,PP]],Per,Num,fin,GapIn-GapOut) -->
 	v(paux,V,Per,Num,fin),
 	vp(Type,VP,_,_,ppl,gap-nogap).%vpobjgone(Type,VP,_,_,ppl),
-	pp(by,PP, G-G).
+	pp(by,PP, GapIn-GapOut).
 
 % passive component constituency hack
 % this is expressively equivalent as a constituent
@@ -225,8 +229,10 @@ vp(Type,[vp(Num,Form), [V,VP,PP]],Per,Num,fin,G-G) -->
 % 	np(N2,_,_,obj,nogap-nogap).
 
 
-pp(Type,[pp, [P,NP]],G-G) --> p(Type,P), np(NP,_,_,obj,G-G).
-adjunct([adjunct, PP],G-G) --> pp(Type,PP,G-G).
+pp(Type,[pp, [P,NP]],GapIn-GapOut) --> p(Type,P), np(NP,_,_,obj,GapIn-GapOut).
+pp(Type,[pp],gap-nogap) --> [].
+adjunct([adjunct, PP],GapIn-GapOut) --> pp(Type,PP,GapIn-GapOut).
+adjunct([adjunct],GapIn-GapOut) --> [].
 
 
 

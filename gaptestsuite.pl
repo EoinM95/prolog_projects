@@ -21,7 +21,7 @@ test(1,X) :-
 test(a1,X) :-
 	s(Type,X,B,G-G,[the,man,sleeps,on,the,ugly,couch],[]).
 test(b1,X) :-
-	s(Type,X,B,G-G,[the,couch,the,man,sleeps,on],[]).% fails, arguably should
+	s(decl,X,B,G-G,[the,couch,the,man,sleeps,on],[]).% fails, arguably should
 test(c1,X) :-
 	s(Type,X,B,G-G,[on,the,couch,the,man,sleeps],[]). % fails, should pass
 test(d1,X) :-
