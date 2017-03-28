@@ -76,7 +76,7 @@ complement_structured(Subcat,Complement,Term,GI-GO) :-
 	member(Element,Subcat),
 	Element =.. [Category|Arguments],
 	Category \== np,
-	append([Category|Arguments,GI-GO],[Complement],Object),
+	append([Category|Arguments],[Complement, GI-GO],Object),
 	Term =.. Object.
 
 tab(0).
