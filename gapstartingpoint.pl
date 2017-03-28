@@ -54,9 +54,9 @@ s(interog,[q, [W, [s, [NP,VP]]]],B, _) -->
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin). % see below
 
 % a basic delarative
-s(decl,[s, [NP,VP]],B, nogap-nogap) -->
-	np(NP,Per,Num,nom,nogap-nogap),
-	vp(Type,VP,Per,Num,fin,nogap-nogap).
+s(decl,[s, [NP,VP]],B, GapIn-GapOut) -->
+	np(NP,Per,Num,nom,GapIn-GapMid),
+	vp(Type,VP,Per,Num,fin,GapMid-GapOut).
 
 s(decl,[s, [A,NP,VP]],B, nogap-nogap) -->
     adjunct(A, nogap-nogap),
@@ -68,9 +68,9 @@ s(inf,[s, [NP,VP]],B, GapIn-GapOut) -->
 	np(NP,Per,Num,nom,GapIn-GapMid),
 	vp(inf,VP,Per,Num,inf,GapMid-GapOut).
 
-s(nv,[s, [NP1,NP2]],B, _) -->
-	np(NP1,Per,Num,obj,nogap-nogap),
-	np(NP2,Per1,Num1,_,nogap-nogap).
+s(nv,[s, [NP1,NP2]],B, GapIn-GapOut) -->
+	np(NP1,Per,Num,obj,GapIn-GapMid),
+	np(NP2,Per1,Num1,_,GapMid-GapOut).
 
 
 
@@ -125,6 +125,11 @@ relc(Type,[relc, [Pro,N,VP]]) -->
 	pro(relpro,Pro,_,_,nom),
 	np(N,Per,Num,nom,nogap-nogap),
 	vp(vt,VP,Per,Num,Form,nogap-gap).
+
+relc(Type,[relc, [Pro,N,VP]]) -->
+  pro(relpro,Pro,_,_,nom),
+  np(N,Per,Num,nom,nogap-nogap),
+  vp(vt,VP,Per,Num,Form,gap-nogap).
 
 relc(Type,[relc, [Pro,N,V,A]]) -->
 	pro(relpro,Pro,_,_,nom),
@@ -406,6 +411,9 @@ lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believe,2,sg,fin).
 lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believes,3,sg,fin).
 lex(vt([np(S,N1,P1,C),s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),believe,P,pl,fin).
 
+
+lex(vt([s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),thinks,3,sg,fin).
+lex(vt([s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),think,P,pl,fin).
 
 lex(vt([s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),thought,P,N,ppl).
 lex(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(bse,B)]),suggested,P,N,ppl).
