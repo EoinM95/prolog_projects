@@ -15,6 +15,7 @@
 %vp(Vtype,VP,Per,Num,Form,nogap-nogap,[sleeps,on,the,couch],[]).
 %np(NP,Per,Num,_,nogap-nogap,[cats],[]).
 %nom(Y,X,[man],[]).
+%s(Type,X,B,G-G,[val,asks,lee,to,believe,sal],[]).
 
 test(1,X) :-
 	s(Type,X,B,G-G,[the,man,sleeps,on,the,couch],[]).

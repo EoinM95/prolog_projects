@@ -15,6 +15,11 @@ s(decl,[s,[[pr(exp), [W]],[topic,VP],[comment,Topic]]],B, GI-GO) -->
         vp(vc,VP,P,N,fin,GI-GO),
         relc([that],Topic).
 
+s(decl,[s,[[pr(exp), [W]],[topic,VP],[comment,Topic]]],B, GI-GO) -->
+          pro(exp,[pr(exp), [W]],Per,Num,Case),
+          vp(vc,VP,P,N,fin,GI-GO),
+          relc([who],Topic).
+
 % pseudocleft
 s(decl,[s,[[topic,Topic],[comment,VP]]],B, GI-GO) -->
         relc([what],Topic),
@@ -59,9 +64,9 @@ s(decl,[s, [A,NP,VP]],B, nogap-nogap) -->
   	vp(Type,VP,Per,Num,fin,gap-nogap).
 
 % a nonfinite basic delarative
-s(inf,[s, [NP,VP]],B, _) -->
-	np(NP,Per,Num,nom,nogap-nogap),
-	vp(inf,VP,Per,Num,inf,nogap-nogap).
+s(inf,[s, [NP,VP]],B, GapIn-GapOut) -->
+	np(NP,Per,Num,nom,GapIn-GapMid),
+	vp(inf,VP,Per,Num,inf,GapMid-GapOut).
 
 s(nv,[s, [NP1,NP2]],B, _) -->
 	np(NP1,Per,Num,obj,nogap-nogap),
@@ -79,17 +84,18 @@ s(comp,[Comp, [S]],B, GI-GO) -->
 % 2 -- proper names can be either 2nd or 3rd
 % 3 -- pronouns are marked for case (thus, case is inherited from
 %      the pronoun.  case comes from the verb in the other instances
-np([np(Num,Case), [DET,N]],3,Num,Case,nogap-nogap) -->
+np([np(Num,Case), [DET,N]],3,Num,Case,G-G) -->
 	det(DET,Num),
 	nom(N,Num).
-np([np(Num,Case)],3,Num,Case,nogap-nogap) -->
+np([np(Num,Case)],3,Num,Case,G-G) -->
   	nom(N,pl).
-np([np(Num,Case), [PN]],_,Num,Case,nogap-nogap) -->
+np([np(Num,Case), [PN]],_,Num,Case,G-G) -->
 	pn(PN,Num).
-np([np(Num,Case), [PN]],Per,Num,Case,nogap-nogap) -->
+np([np(Num,Case), [PN]],Per,Num,Case,G-G) -->
 	pro(pro,PN,Per,Num,Case).
 
 np([np(Num,Case)],Per,Num,Case,gap-nogap) --> [].
+np([np(Num,Case)],Per,Num,Case,nogap-gap) --> [].
 
 nom(N,Num) --> n(N,Num).
 nom([nom, [A, N]],Num) --> adj(A,Type), nom(N,Num).
@@ -114,6 +120,11 @@ relc(Type,[relc, [Pro,N,V]]) -->
 	np(N,Per,Num,nom,nogap-nogap),
 	vt(V,Per,Num,Form).
 %vp(vt,[vp(Num,Form), [V,N]],Per,Num,Form) -->
+
+relc(Type,[relc, [Pro,N,VP]]) -->
+	pro(relpro,Pro,_,_,nom),
+	np(N,Per,Num,nom,nogap-nogap),
+	vp(vt,VP,Per,Num,Form,nogap-gap).
 
 relc(Type,[relc, [Pro,N,V,A]]) -->
 	pro(relpro,Pro,_,_,nom),
@@ -310,6 +321,7 @@ lex(n,couches,pl).
 lex(pn,bill,sg).
 lex(pn,sal,sg).  % new lexical entries
 lex(pn,val,sg).
+lex(pn,lee,sg).
 lex(pn,parliament,pl).
 
 lex(exp,it).
@@ -403,6 +415,10 @@ lex(vt([s(decl,B),s(comp,B),s(nv,B),s(inf,B)]),thought,P,N,fin).
 lex(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(bse,B)]),suggested,P,N,fin).
 lex(vt([s(interog,B)]),wondered,P,N,fin).
 lex(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),asked,P,N,fin).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),asks,3,sg,fin).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),ask,1,_,fin).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),ask,2,_,fin).
+lex(vt([np(S,N1,P1,C),s(interog,B),s(inf,B)]),ask,3,pl,fin).
 
 word(vt([np(S,N1,P1,C),s(interog,B),s(bse,B),s(comp,B)]),[saw],P,N,fin).
 word(vt([np(S,N1,P1,C),s(interog,B),s(decl,B),s(comp,B),s(inf,B)]),[heard],P,N,fin).
