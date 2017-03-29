@@ -54,9 +54,13 @@ s(interog,[q, [W, [s, [NP,VP]]]],B, _) -->
 	vp(Type,VP,Per,Num,fin,gap-nogap).%vpobjgone(Type,VP,Per,Num,fin). % see below
 
 % a basic delarative
-s(decl,[s, [NP,VP]],B, GapIn-GapOut) -->
+s(decl,[s, [NP,VP]],nsb, GapIn-GapOut) -->
 	np(NP,Per,Num,nom,GapIn-GapMid),
 	vp(Type,VP,Per,Num,fin,GapMid-GapOut).
+
+s(decl,[s, [NP,VP]],sb, GapIn-GapOut) -->
+  	np(NP,Per,Num,nom,GI-GO),
+  	vp(Type,VP,Per,Num,fin,GapIn-GapOut).
 
 s(decl,[s, [A,NP,VP]],B, nogap-nogap) -->
     adjunct(A, nogap-nogap),
@@ -74,9 +78,9 @@ s(nv,[s, [NP1,NP2]],B, GapIn-GapOut) -->
 
 
 
-s(comp,[Comp, [S]],B, GI-GO) -->
+s(comp,[Comp, [S]],sb, GI-GO) -->
 	comp(Comp),
-	s(Form,S,B, GI-GO),
+	s(Form,S,sb, GI-GO),
 	{Form \== comp}.
 
 % np classes
